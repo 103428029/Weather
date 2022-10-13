@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Test</string>
+    <string-array name="location">
+        <item>Hoang Mai, Hanoi</item>
+        <item>Ba Dinh, Hanoi</item>
+        <item>Ha Dong, Hanoi</item>
+    </string-array>
+
+</resources>
