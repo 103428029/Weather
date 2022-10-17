@@ -19,8 +19,9 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private ImageView imageView1;
-        private TextView textView2;
         
+        private TextView textView2;
+
         private TextView textView3;
 
         public ViewHolder(View view) {
