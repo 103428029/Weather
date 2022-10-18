@@ -11,6 +11,13 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.AutoCompleteTextView;
 
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+
 public class MainActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     CustomAdapter progAdapter;
@@ -28,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
     String[] dayList = {"Wednesday", "Thursday", "Friday", "Saturday"};
     String[] descriptionList = {"Chance of heavy rain.", "Chance of lightning.", "Chance of lightning.", "Likely to have light rain"};
     String[] temp2 = {"20℃", "21℃", "19℃", "20℃"};
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +59,24 @@ public class MainActivity extends AppCompatActivity {
         ArrayAdapter<CharSequence>adapter= ArrayAdapter.createFromResource(this, R.array.location, R.layout.custom_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
         spinnerLocation.setAdapter(adapter);
+
+        URL url = null;
+        HttpURLConnection urlConnection = null;
+
+        try {
+            url = new URL("https://api.openweathermap.org/data/3.0/onecall?lat=33.44&lon=-94.04&exclude=hourly&appid=ef7d0f574f4f130be5273b3c5e07988d");
+
+            urlConnection = (HttpURLConnection) url.openConnection();
+            InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+            readStream(in);
+        } catch (IOException exception1) {
+            exception1.printStackTrace();
+        } catch (MalformedURLException exception2) {
+            exception2.printStackTrace();
+        }
+        finally {
+            urlConnection.disconnect();
+        }
     }
 
     public void newScreen(View view) {
