@@ -6,14 +6,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.AutoCompleteTextView;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -43,6 +46,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        StrictMode.ThreadPolicy gfgPolicy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(gfgPolicy);
+
         recyclerView = findViewById(R.id.rvText);
         layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         recyclerView.setLayoutManager(layoutManager);
@@ -62,21 +68,34 @@ public class MainActivity extends AppCompatActivity {
 
         URL url = null;
         HttpURLConnection urlConnection = null;
+        StringBuffer readTextBuf = new StringBuffer();
+
 
         try {
-            url = new URL("https://api.openweathermap.org/data/3.0/onecall?lat=33.44&lon=-94.04&exclude=hourly&appid=ef7d0f574f4f130be5273b3c5e07988d");
-
+//            int code = urlConnection.getResponseCode();
+//            if (code !=  200) {
+//                throw new IOException("Invalid response from server: " + code);
+//            }
+            url = new URL("http://api.openweathermap.org/data/2.5/weather?q=London,uk&APPID=ef7d0f574f4f130be5273b3c5e07988d");
             urlConnection = (HttpURLConnection) url.openConnection();
-            InputStream in = new BufferedInputStream(urlConnection.getInputStream());
-            readStream(in);
+            urlConnection.setRequestMethod("GET");
+            InputStream inputStream = urlConnection.getInputStream();
+            InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+            String line = bufferedReader.readLine();
+            while (line != null) {
+                readTextBuf.append(line);
+                line = bufferedReader.readLine();
+            }
+            System.out.print("oololololo"+line);
         } catch (IOException exception1) {
             exception1.printStackTrace();
-        } catch (MalformedURLException exception2) {
-            exception2.printStackTrace();
+        } finally {
+            if (urlConnection != null) {
+                urlConnection.disconnect();
+            }
         }
-        finally {
-            urlConnection.disconnect();
-        }
+
     }
 
     public void newScreen(View view) {
