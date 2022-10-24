@@ -5,20 +5,20 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.app.ProgressDialog;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-import android.widget.AutoCompleteTextView;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 
 public class MainActivity extends AppCompatActivity {
@@ -66,36 +66,6 @@ public class MainActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
         spinnerLocation.setAdapter(adapter);
 
-        URL url = null;
-        HttpURLConnection urlConnection = null;
-        StringBuffer readTextBuf = new StringBuffer();
-
-
-        try {
-//            int code = urlConnection.getResponseCode();
-//            if (code !=  200) {
-//                throw new IOException("Invalid response from server: " + code);
-//            }
-            url = new URL("http://api.openweathermap.org/data/2.5/weather?q=London,uk&APPID=ef7d0f574f4f130be5273b3c5e07988d");
-            urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.setRequestMethod("GET");
-            InputStream inputStream = urlConnection.getInputStream();
-            InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-            String line = bufferedReader.readLine();
-            while (line != null) {
-                readTextBuf.append(line);
-                line = bufferedReader.readLine();
-            }
-            System.out.print("oololololo"+line);
-        } catch (IOException exception1) {
-            exception1.printStackTrace();
-        } finally {
-            if (urlConnection != null) {
-                urlConnection.disconnect();
-            }
-        }
-
     }
 
     public void newScreen(View view) {
@@ -103,4 +73,54 @@ public class MainActivity extends AppCompatActivity {
         startActivity(in);
     }
 
+    private class TestAsyncTask extends AsyncTask <String, String, String> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            ProgressDialog p = new ProgressDialog(MainActivity.this);
+            p.setMessage("Please wait...");
+            p.setIndeterminate(false);
+            p.setCancelable(false);
+            p.show();
+        }
+
+        @Override
+        protected String doInBackground(String... strings) {
+            URL url;
+            HttpURLConnection urlConnection = null;
+            StringBuffer readTextBuf = new StringBuffer();
+
+            try {
+//            int code = urlConnection.getResponseCode();
+//            if (code !=  200) {
+//                throw new IOException("Invalid response from server: " + code);
+//            }
+                url = new URL("http://api.openweathermap.org/data/2.5/weather?q=London,uk&APPID=ef7d0f574f4f130be5273b3c5e07988d");
+                urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setRequestMethod("GET");
+                InputStream inputStream = urlConnection.getInputStream();
+                InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+                String line = bufferedReader.readLine();
+                while (line != null) {
+                    readTextBuf.append(line);
+                    line = bufferedReader.readLine();
+                }
+                System.out.print("oololololo"+line);
+            } catch (IOException exception1) {
+                exception1.printStackTrace();
+            } finally {
+                if (urlConnection != null) {
+                    urlConnection.disconnect();
+                }
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String string) {
+            super.onPostExecute(string);
+
+        }
+    }
 }
