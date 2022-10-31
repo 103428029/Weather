@@ -23,7 +23,7 @@ import java.net.URL;
 
 public class MainActivity extends AppCompatActivity {
     RecyclerView recyclerView;
-    CustomAdapter progAdapter;
+    CustomAdapter programAdapter;
     RecyclerView.LayoutManager layoutManager;
 
     RecyclerView recyclerView2;
@@ -52,8 +52,8 @@ public class MainActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.rvText);
         layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         recyclerView.setLayoutManager(layoutManager);
-        progAdapter = new CustomAdapter(weatherImg, temp, time);
-        recyclerView.setAdapter(progAdapter);
+        programAdapter = new CustomAdapter(weatherImg, temp, time);
+        recyclerView.setAdapter(programAdapter);
 
         recyclerView2 = findViewById(R.id.rvText2);
         layoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
@@ -66,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
         spinnerLocation.setAdapter(adapter);
 
+        new TestAsyncTask().execute();
     }
 
     public void newScreen(View view) {
@@ -80,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
             ProgressDialog p = new ProgressDialog(MainActivity.this);
             p.setMessage("Please wait...");
             p.setIndeterminate(false);
-            p.setCancelable(false);
+            p.setCancelable(true);
             p.show();
         }
 
@@ -88,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
         protected String doInBackground(String... strings) {
             URL url;
             HttpURLConnection urlConnection = null;
-            StringBuffer readTextBuf = new StringBuffer();
+            StringBuilder readTextBuf = new StringBuilder();
 
             try {
 //            int code = urlConnection.getResponseCode();
@@ -101,12 +102,12 @@ public class MainActivity extends AppCompatActivity {
                 InputStream inputStream = urlConnection.getInputStream();
                 InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
                 BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-                String line = bufferedReader.readLine();
-                while (line != null) {
+                String line;
+                while ((line = bufferedReader.readLine()) != null) {
                     readTextBuf.append(line);
-                    line = bufferedReader.readLine();
                 }
-                System.out.print("oololololo"+line);
+                return readTextBuf.toString();
+
             } catch (IOException exception1) {
                 exception1.printStackTrace();
             } finally {
@@ -118,9 +119,15 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        protected void onPostExecute(String string) {
-            super.onPostExecute(string);
-
+        protected void onProgressUpdate(String... values) {
+            super.onProgressUpdate(values);
         }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            System.out.println("@@@@" + s);
+        }
+
     }
 }
