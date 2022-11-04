@@ -1,4 +1,4 @@
-package com.example.test;
+package com.example.test.ui.detail;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
@@ -14,7 +14,10 @@ import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 
-    public class MainActivity2 extends AppCompatActivity {
+import com.example.test.ui.home.CustomAdapter;
+import com.example.test.R;
+
+public class MainActivity2 extends AppCompatActivity {
     RecyclerView recyclerView;
     CustomAdapter progAdapter;
     RecyclerView.LayoutManager layoutManager;

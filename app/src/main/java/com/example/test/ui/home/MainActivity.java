@@ -1,4 +1,4 @@
-package com.example.test;
+package com.example.test.ui.home;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -12,6 +12,10 @@ import android.os.StrictMode;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
+
+import com.example.test.ui.detail.MainActivity2;
+import com.example.test.R;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -20,6 +24,10 @@ import java.io.InputStreamReader;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
     RecyclerView recyclerView;
@@ -75,13 +83,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private class TestAsyncTask extends AsyncTask <String, String, String> {
+        ProgressDialog p = new ProgressDialog(MainActivity.this);
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            ProgressDialog p = new ProgressDialog(MainActivity.this);
             p.setMessage("Please wait...");
             p.setIndeterminate(false);
-            p.setCancelable(true);
+            p.setCancelable(false);
             p.show();
         }
 
@@ -108,6 +116,8 @@ public class MainActivity extends AppCompatActivity {
                 }
                 return readTextBuf.toString();
 
+                JSONObject jsonObject = new JSONObject();
+
             } catch (IOException exception1) {
                 exception1.printStackTrace();
             } finally {
@@ -126,7 +136,13 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
+            p.dismiss();
             System.out.println("@@@@" + s);
+            TextView textView =  findViewById(R.id.testTextView);
+            String tetString;
+
+            textView.setText(s);
+
         }
 
     }

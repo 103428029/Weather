@@ -1,4 +1,4 @@
-package com.example.test;
+package com.example.test.ui.detail;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.example.test.R;
 
 public class CustomAdapter3 extends  RecyclerView.Adapter<CustomAdapter3.ViewHolder>{
     int[] condImgList;
