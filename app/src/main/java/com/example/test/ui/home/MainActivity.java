@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
     String[] descriptionList = {"Chance of heavy rain.", "Chance of lightning.", "Chance of lightning.", "Likely to have light rain"};
     String[] temp2 = {"20℃", "21℃", "19℃", "20℃"};
 
-
+    String temperature;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,6 +98,7 @@ public class MainActivity extends AppCompatActivity {
             URL url;
             HttpURLConnection urlConnection = null;
             StringBuilder readTextBuf = new StringBuilder();
+            String weatherDetail;
 
             try {
 //            int code = urlConnection.getResponseCode();
@@ -114,12 +115,18 @@ public class MainActivity extends AppCompatActivity {
                 while ((line = bufferedReader.readLine()) != null) {
                     readTextBuf.append(line);
                 }
-                return readTextBuf.toString();
+                JSONObject reader = new JSONObject(readTextBuf.toString());
+                JSONObject main = reader.getJSONObject("main");
+                temperature = main.getString("temp");
+                String pressure = main.getString("pressure");
+                String humidity = main.getString("humidity");
 
-                JSONObject jsonObject = new JSONObject();
+                return readTextBuf.toString();
 
             } catch (IOException exception1) {
                 exception1.printStackTrace();
+            } catch (JSONException exception2) {
+                exception2.printStackTrace();
             } finally {
                 if (urlConnection != null) {
                     urlConnection.disconnect();
@@ -139,10 +146,10 @@ public class MainActivity extends AppCompatActivity {
             p.dismiss();
             System.out.println("@@@@" + s);
             TextView textView =  findViewById(R.id.testTextView);
-            String tetString;
-
             textView.setText(s);
 
+            TextView textView1 = findViewById(R.id.celsiusDegree);
+            textView1.setText(temperature + "℉");
         }
 
     }
