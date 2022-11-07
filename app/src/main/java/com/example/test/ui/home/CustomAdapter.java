@@ -46,6 +46,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
         // Get element from your dataset at this position and replace the
         // contents of the view with that element
+        RV1Data item = rv1DataList.get(position);
         viewHolder.imageView1.setImageResource(rv1DataList.get(position).getWeatherImg());
         viewHolder.textView2.setText(rv1DataList.get(position).getTemp());
         viewHolder.textView3.setText(rv1DataList.get(position).getTime());
