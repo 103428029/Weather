@@ -16,10 +16,15 @@ import android.widget.Toast;
 
 import com.example.test.ui.home.CustomAdapter;
 import com.example.test.R;
+import com.example.test.ui.home.RV1Data;
+import com.example.test.ui.home.RV3Data;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity2 extends AppCompatActivity {
     RecyclerView recyclerView;
-    CustomAdapter progAdapter;
+    CustomAdapter programAdapter;
     RecyclerView.LayoutManager layoutManager;
 
     RecyclerView recyclerView2;
@@ -27,13 +32,13 @@ public class MainActivity2 extends AppCompatActivity {
     RecyclerView.LayoutManager layoutManager2;
 
 
-    int[] weatherImg = {R.drawable.rain, R.drawable.night_storm, R.drawable.night_storm, R.drawable.rain, R.drawable.rain, R.drawable.night_storm};
-    String[] temp = {"21℃", "20℃", "19℃", "21℃", "20℃", "22℃"};
-    String[] time = {"4:00 PM", "5:00 PM", "6:00 PM", "7:00 PM", "8:00 PM", "9:00 PM"};
+//    int[] weatherImg = {R.drawable.rain, R.drawable.night_storm, R.drawable.night_storm, R.drawable.rain, R.drawable.rain, R.drawable.night_storm};
+//    String[] temp = {"21℃", "20℃", "19℃", "21℃", "20℃", "22℃"};
+//    String[] time = {"4:00 PM", "5:00 PM", "6:00 PM", "7:00 PM", "8:00 PM", "9:00 PM"};
 
-    int[] detailImg1 = {R.drawable.ic_humidity, R.drawable.ic_air_pressure, R.drawable.ic_wind, R.drawable.ic_fog};
-    String[] detailData = {"86%", "940hPa","1 km/h", "14%"};
-    String[] detailDesc = {"Humidity", "Air Pressure", "Wind Velocity", "Fog"};
+//    int[] detailImg1 = {R.drawable.ic_humidity, R.drawable.ic_air_pressure, R.drawable.ic_wind, R.drawable.ic_fog};
+//    String[] detailData = {"86%", "940hPa","1 km/h", "14%"};
+//    String[] detailDesc = {"Humidity", "Air Pressure", "Wind Velocity", "Fog"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,13 +48,25 @@ public class MainActivity2 extends AppCompatActivity {
         recyclerView = findViewById(R.id.rvText3);
         layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         recyclerView.setLayoutManager(layoutManager);
-        progAdapter = new CustomAdapter(weatherImg, temp, time);
-        recyclerView.setAdapter(progAdapter);
+        List<RV1Data> rv1DataList = new ArrayList<>();
+        rv1DataList.add(new RV1Data(R.drawable.rain, "21℃", "4:00 PM"));
+        rv1DataList.add(new RV1Data(R.drawable.night_storm, "20℃", "5:00 PM"));
+        rv1DataList.add(new RV1Data(R.drawable.night_storm, "19℃", "6:00 PM"));
+        rv1DataList.add(new RV1Data(R.drawable.night_storm, "19℃", "6:00 PM"));
+        rv1DataList.add(new RV1Data(R.drawable.rain, "20℃", "8:00 PM"));
+        rv1DataList.add(new RV1Data(R.drawable.night_storm, "22℃", "9:00 PM"));
+        programAdapter = new CustomAdapter(rv1DataList);
+        recyclerView.setAdapter(programAdapter);
 
         recyclerView2 = findViewById(R.id.rvText4);
         layoutManager2 = new GridLayoutManager(this, 2);
         recyclerView2.setLayoutManager(layoutManager2);
-        progAdapter2 = new CustomAdapter3(detailImg1, detailData, detailDesc);
+        List<RV3Data> rv3DataList = new ArrayList<>();
+        rv3DataList.add(new RV3Data(R.drawable.ic_humidity, "86%", "Humidity"));
+        rv3DataList.add(new RV3Data(R.drawable.ic_air_pressure, "940hPa", "Air Pressure"));
+        rv3DataList.add(new RV3Data(R.drawable.ic_wind, "1 km/h", "Wind Velocity"));
+        rv3DataList.add(new RV3Data(R.drawable.ic_fog, "14%", "Fog"));
+        progAdapter2 = new CustomAdapter3(rv3DataList);
         recyclerView2.setAdapter(progAdapter2);
 
         ImageView menuIcon = findViewById(R.id.mode_menu);

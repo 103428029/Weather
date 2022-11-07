@@ -14,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.example.test.model.Weather;
 import com.example.test.ui.detail.MainActivity2;
 import com.example.test.R;
 
@@ -24,6 +25,8 @@ import java.io.InputStreamReader;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -38,14 +41,14 @@ public class MainActivity extends AppCompatActivity {
     CustomAdapter2 customAdapter2;
     RecyclerView.LayoutManager layoutManager2;
 
-    int[] weatherImg = {R.drawable.rain, R.drawable.night_storm, R.drawable.night_storm, R.drawable.rain, R.drawable.rain, R.drawable.night_storm};
-    String[] temp = {"21℃", "20℃", "19℃", "21℃", "20℃", "22℃"};
-    String[] time = {"4:00 PM", "5:00 PM", "6:00 PM", "7:00 PM", "8:00 PM", "9:00 PM"};
+//    int[] weatherImg = {R.drawable.rain, R.drawable.night_storm, R.drawable.night_storm, R.drawable.rain, R.drawable.rain, R.drawable.night_storm};
+//    String[] temp = {"21℃", "20℃", "19℃", "21℃", "20℃", "22℃"};
+//    String[] time = {"4:00 PM", "5:00 PM", "6:00 PM", "7:00 PM", "8:00 PM", "9:00 PM"};
 
-    int[] weatherImg2 = {R.drawable.rain3, R.drawable.rain4, R.drawable.rain4, R.drawable.rain3};
-    String[] dayList = {"Wednesday", "Thursday", "Friday", "Saturday"};
-    String[] descriptionList = {"Chance of heavy rain.", "Chance of lightning.", "Chance of lightning.", "Likely to have light rain"};
-    String[] temp2 = {"20℃", "21℃", "19℃", "20℃"};
+//    int[] weatherImg2 = {R.drawable.rain3, R.drawable.rain4, R.drawable.rain4, R.drawable.rain3};
+//    String[] dayList = {"Wednesday", "Thursday", "Friday", "Saturday"};
+//    String[] descriptionList = {"Chance of heavy rain.", "Chance of lightning.", "Chance of lightning.", "Likely to have light rain"};
+//    String[] temp2 = {"20℃", "21℃", "19℃", "20℃"};
 
     String temperature;
 
@@ -54,19 +57,31 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        StrictMode.ThreadPolicy gfgPolicy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(gfgPolicy);
+//        StrictMode.ThreadPolicy gfgPolicy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+//        StrictMode.setThreadPolicy(gfgPolicy);
 
         recyclerView = findViewById(R.id.rvText);
         layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         recyclerView.setLayoutManager(layoutManager);
-        programAdapter = new CustomAdapter(weatherImg, temp, time);
+        List<RV1Data> rv1DataList = new ArrayList<>();
+        rv1DataList.add(new RV1Data(R.drawable.rain, "21℃", "4:00 PM"));
+        rv1DataList.add(new RV1Data(R.drawable.night_storm, "20℃", "5:00 PM"));
+        rv1DataList.add(new RV1Data(R.drawable.night_storm, "19℃", "6:00 PM"));
+        rv1DataList.add(new RV1Data(R.drawable.night_storm, "19℃", "6:00 PM"));
+        rv1DataList.add(new RV1Data(R.drawable.rain, "20℃", "8:00 PM"));
+        rv1DataList.add(new RV1Data(R.drawable.night_storm, "22℃", "9:00 PM"));
+        programAdapter = new CustomAdapter(rv1DataList);
         recyclerView.setAdapter(programAdapter);
 
         recyclerView2 = findViewById(R.id.rvText2);
         layoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerView2.setLayoutManager(layoutManager2);
-        customAdapter2 = new CustomAdapter2(weatherImg2, dayList, descriptionList, temp2);
+        List<RV2Data> rv2DataList = new ArrayList<>();
+        rv2DataList.add(new RV2Data(R.drawable.rain3, "Wednesday", "Chance of heavy rain.", "20℃"));
+        rv2DataList.add(new RV2Data(R.drawable.rain4, "Thursday", "Chance of heavy rain.", "20℃"));
+        rv2DataList.add(new RV2Data(R.drawable.rain4, "Friday", "Chance of heavy rain.", "20℃"));
+        rv2DataList.add(new RV2Data(R.drawable.rain3, "Saturday", "Chance of heavy rain.", "20℃"));
+        customAdapter2 = new CustomAdapter2(rv2DataList);
         recyclerView2.setAdapter(customAdapter2);
 
         Spinner spinnerLocation = findViewById(R.id.location_dropdown_menu);
@@ -115,6 +130,7 @@ public class MainActivity extends AppCompatActivity {
                 while ((line = bufferedReader.readLine()) != null) {
                     readTextBuf.append(line);
                 }
+
                 JSONObject reader = new JSONObject(readTextBuf.toString());
                 JSONObject main = reader.getJSONObject("main");
                 temperature = main.getString("temp");
@@ -145,12 +161,22 @@ public class MainActivity extends AppCompatActivity {
             super.onPostExecute(s);
             p.dismiss();
             System.out.println("@@@@" + s);
-            TextView textView =  findViewById(R.id.testTextView);
-            textView.setText(s);
 
             TextView textView1 = findViewById(R.id.celsiusDegree);
             textView1.setText(temperature + "℉");
         }
+    }
 
+    private class Async extends AsyncTask <Void, String, Weather> {
+
+        @Override
+        protected Weather doInBackground(Void... voids) {
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Weather weather) {
+            super.onPostExecute(weather);
+        }
     }
 }

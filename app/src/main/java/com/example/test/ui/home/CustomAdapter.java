@@ -11,18 +11,14 @@ import android.widget.TextView;
 import com.example.test.DayWeather;
 import com.example.test.R;
 
-public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder> {
+import java.util.List;
 
-    DayWeather dayWeather;
-    int[] weatherList;
-    String[] tempList;
-    String[] timeList;
+public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder> {
+    List<RV1Data> rv1DataList;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private ImageView imageView1;
-
         private TextView textView2;
-
         private TextView textView3;
 
         public ViewHolder(View view) {
@@ -34,10 +30,8 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
         }
     }
 
-    public CustomAdapter(int[] weatherList, String[] tempList, String[] timeList) {
-        this.weatherList = weatherList;
-        this.tempList = tempList;
-        this.timeList = timeList;
+    public CustomAdapter(List<RV1Data> rv1DataList) {
+        this.rv1DataList = rv1DataList;
     }
 
     @Override
@@ -52,14 +46,14 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
         // Get element from your dataset at this position and replace the
         // contents of the view with that element
-        viewHolder.imageView1.setImageResource(weatherList[position]);
-        viewHolder.textView2.setText(tempList[position]);
-        viewHolder.textView3.setText(timeList[position]);
+        viewHolder.imageView1.setImageResource(rv1DataList.get(position).getWeatherImg());
+        viewHolder.textView2.setText(rv1DataList.get(position).getTemp());
+        viewHolder.textView3.setText(rv1DataList.get(position).getTime());
     }
 
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        return weatherList.length;
+        return rv1DataList.size();
     }
 }

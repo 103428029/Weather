@@ -11,11 +11,10 @@ import android.widget.TextView;
 
 import com.example.test.R;
 
+import java.util.List;
+
 public class CustomAdapter2 extends RecyclerView.Adapter<CustomAdapter2.ViewHolder> {
-    int[] signList;
-    String[] weekDayList;
-    String[] descList;
-    String[] tempList2;
+    List<RV2Data> rv2DataList;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private ImageView imgView1;
@@ -32,11 +31,8 @@ public class CustomAdapter2 extends RecyclerView.Adapter<CustomAdapter2.ViewHold
         }
     }
 
-    public CustomAdapter2(int[] signList, String[] weekDayList, String[] descList, String[] tempList2) {
-        this.signList = signList;
-        this.weekDayList = weekDayList;
-        this.descList = descList;
-        this.tempList2 = tempList2;
+    public CustomAdapter2(List<RV2Data> rv2DataList) {
+        this.rv2DataList = rv2DataList;
     }
 
     @NonNull
@@ -49,14 +45,14 @@ public class CustomAdapter2 extends RecyclerView.Adapter<CustomAdapter2.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.imgView1.setImageResource(signList[position]);
-        holder.txtView2.setText(weekDayList[position]);
-        holder.txtView3.setText(descList[position]);
-        holder.txtView4.setText(tempList2[position]);
+        holder.imgView1.setImageResource(rv2DataList.get(position).getWeatherImg2());
+        holder.txtView2.setText(rv2DataList.get(position).getDayList());
+        holder.txtView3.setText(rv2DataList.get(position).getDescriptionList());
+        holder.txtView4.setText(rv2DataList.get(position).getTemp2());
     }
 
     @Override
     public int getItemCount() {
-        return signList.length;
+        return rv2DataList.size();
     }
 }
