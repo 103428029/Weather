@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
         spinnerLocation.setAdapter(adapter);
 
-        new Async().execute();
+//        new Async().execute();
     }
 
     public void newScreen(View view) {
@@ -153,11 +153,6 @@ public class MainActivity extends AppCompatActivity {
 //        }
 //
 //        @Override
-//        protected void onProgressUpdate(String... values) {
-//            super.onProgressUpdate(values);
-//        }
-//
-//        @Override
 //        protected void onPostExecute(String s) {
 //            super.onPostExecute(s);
 //            p.dismiss();
@@ -176,6 +171,44 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected Weather doInBackground(Void... voids) {
+            URL url;
+            HttpURLConnection urlConnection = null;
+            StringBuilder readTextBuf = new StringBuilder();
+            Weather weather = new Weather();
+
+            try {
+                url = new URL("http://api.openweathermap.org/data/2.5/weather?q=London,uk&APPID=ef7d0f574f4f130be5273b3c5e07988d");
+                urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setRequestMethod("GET");
+                InputStream inputStream = urlConnection.getInputStream();
+                InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+                String line;
+                while ((line = bufferedReader.readLine()) != null) {
+                    readTextBuf.append(line);
+                }
+
+                int code = urlConnection.getResponseCode();
+                if (code !=  200) {throw new IOException("Invalid response from server: " + code);}
+
+                JSONObject reader = new JSONObject(readTextBuf.toString());
+                JSONObject main = reader.getJSONObject("main");
+
+
+                temperature = main.getString("temp");
+                String pressure = main.getString("pressure");
+                String humidity = main.getString("humidity");
+
+
+            } catch (IOException exception1) {
+                exception1.printStackTrace();
+            } catch (JSONException exception2) {
+                exception2.printStackTrace();
+            } finally {
+                if (urlConnection != null) {
+                    urlConnection.disconnect();
+                }
+            }
             return null;
         }
 

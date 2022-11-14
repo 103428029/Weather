@@ -3,8 +3,6 @@ package com.example.test.model;
 import com.google.gson.annotations.SerializedName;
 
 public class Weather {
-    @SerializedName("coord")
-    private Location coord;
 
     @SerializedName("weather")
     private WeatherDesc weather;

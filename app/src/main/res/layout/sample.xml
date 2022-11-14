@@ -9,13 +9,11 @@
     android:gravity="center"
     android:background="@drawable/txtdraw2">
 
-
     <ImageView
         android:id="@+id/dayWeather"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        app:srcCompat="@drawable/rain" />
-
+        app:srcCompat="@drawable/rain"/>
 
     <TextView
         android:layout_width="wrap_content"
