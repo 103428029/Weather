@@ -2,10 +2,20 @@ package com.example.test.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 public class Weather {
 
     @SerializedName("weather")
-    private WeatherDesc weather;
+    private List<WeatherDesc> weatherDesc;
+
+    public List<WeatherDesc> getWeatherDesc() {
+        return weatherDesc;
+    }
+
+    public void setWeatherDesc(List<WeatherDesc> weatherDesc) {
+        this.weatherDesc = weatherDesc;
+    }
 
     @SerializedName("base")
     private String base;
@@ -18,6 +28,12 @@ public class Weather {
 
     @SerializedName("main")
     private Main main;
+    public Main getMain() {
+        return main;
+    }
+    public void setMain(Main main) {
+        this.main = main;
+    }
 
     @SerializedName("visibility")
     private int visibility;
@@ -30,13 +46,19 @@ public class Weather {
 
     @SerializedName("wind")
     private Wind wind;
+    public Wind getWind() {
+        return wind;
+    }
+    public void setWind(Wind wind) {
+        this.wind = wind;
+    }
 
     @SerializedName("name")
-    private String name;
-    public String getName() {
-        return name;
+    private String location;
+    public String getLocation() {
+        return location;
     }
-    public void setName(String name) {
-        this.name = name;
+    public void setLocation(String location) {
+        this.location = location;
     }
 }

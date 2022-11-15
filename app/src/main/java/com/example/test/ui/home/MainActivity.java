@@ -17,6 +17,8 @@ import android.widget.TextView;
 import com.example.test.model.Weather;
 import com.example.test.ui.detail.MainActivity2;
 import com.example.test.R;
+import com.google.gson.Gson;
+import com.google.gson.JsonParser;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -33,6 +35,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
+    //    int[] weatherImg = {R.drawable.rain, R.drawable.night_storm, R.drawable.night_storm, R.drawable.rain, R.drawable.rain, R.drawable.night_storm};
+//    String[] temp = {"21℃", "20℃", "19℃", "21℃", "20℃", "22℃"};
+//    String[] time = {"4:00 PM", "5:00 PM", "6:00 PM", "7:00 PM", "8:00 PM", "9:00 PM"};
+//    int[] weatherImg2 = {R.drawable.rain3, R.drawable.rain4, R.drawable.rain4, R.drawable.rain3};
+//    String[] dayList = {"Wednesday", "Thursday", "Friday", "Saturday"};
+//    String[] descriptionList = {"Chance of heavy rain.", "Chance of lightning.", "Chance of lightning.", "Likely to have light rain"};
+//    String[] temp2 = {"20℃", "21℃", "19℃", "20℃"};
     RecyclerView recyclerView;
     CustomAdapter programAdapter;
     RecyclerView.LayoutManager layoutManager;
@@ -41,24 +50,18 @@ public class MainActivity extends AppCompatActivity {
     CustomAdapter2 customAdapter2;
     RecyclerView.LayoutManager layoutManager2;
 
-//    int[] weatherImg = {R.drawable.rain, R.drawable.night_storm, R.drawable.night_storm, R.drawable.rain, R.drawable.rain, R.drawable.night_storm};
-//    String[] temp = {"21℃", "20℃", "19℃", "21℃", "20℃", "22℃"};
-//    String[] time = {"4:00 PM", "5:00 PM", "6:00 PM", "7:00 PM", "8:00 PM", "9:00 PM"};
-
-//    int[] weatherImg2 = {R.drawable.rain3, R.drawable.rain4, R.drawable.rain4, R.drawable.rain3};
-//    String[] dayList = {"Wednesday", "Thursday", "Friday", "Saturday"};
-//    String[] descriptionList = {"Chance of heavy rain.", "Chance of lightning.", "Chance of lightning.", "Likely to have light rain"};
-//    String[] temp2 = {"20℃", "21℃", "19℃", "20℃"};
-
-    String temperature;
+    Weather weatherData;
+    TextView textView1;
+    TextView textView2;
+    TextView textView3;
+    TextView textView4;
+    TextView textView5;
+    TextView textView6;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-//        StrictMode.ThreadPolicy gfgPolicy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-//        StrictMode.setThreadPolicy(gfgPolicy);
 
         recyclerView = findViewById(R.id.rvText);
         layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
@@ -89,79 +92,15 @@ public class MainActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
         spinnerLocation.setAdapter(adapter);
 
-//        new Async().execute();
+        new Async().execute();
+        textView1 = findViewById(R.id.celsiusDegree);
+        textView2 = findViewById(R.id.text);
     }
 
     public void newScreen(View view) {
         Intent in = new Intent(getApplicationContext(), MainActivity2.class);
         startActivity(in);
     }
-
-//    private class TestAsyncTask extends AsyncTask <String, String, String> {
-//        ProgressDialog p = new ProgressDialog(MainActivity.this);
-//        @Override
-//        protected void onPreExecute() {
-//            super.onPreExecute();
-//            p.setMessage("Please wait...");
-//            p.setIndeterminate(false);
-//            p.setCancelable(false);
-//            p.show();
-//        }
-//
-//        @Override
-//        protected String doInBackground(String... strings) {
-//            URL url;
-//            HttpURLConnection urlConnection = null;
-//            StringBuilder readTextBuf = new StringBuilder();
-//            String weatherDetail;
-//
-//            try {
-//                url = new URL("http://api.openweathermap.org/data/2.5/weather?q=London,uk&APPID=ef7d0f574f4f130be5273b3c5e07988d");
-//                urlConnection = (HttpURLConnection) url.openConnection();
-//                urlConnection.setRequestMethod("GET");
-//                InputStream inputStream = urlConnection.getInputStream();
-//                InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-//                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-//                String line;
-//                while ((line = bufferedReader.readLine()) != null) {
-//                    readTextBuf.append(line);
-//                }
-//
-//                int code = urlConnection.getResponseCode();
-//                if (code !=  200) {
-//                    throw new IOException("Invalid response from server: " + code);
-//                }
-//
-//                JSONObject reader = new JSONObject(readTextBuf.toString());
-//                JSONObject main = reader.getJSONObject("main");
-//                temperature = main.getString("temp");
-//                String pressure = main.getString("pressure");
-//                String humidity = main.getString("humidity");
-//
-//                return readTextBuf.toString();
-//
-//            } catch (IOException exception1) {
-//                exception1.printStackTrace();
-//            } catch (JSONException exception2) {
-//                exception2.printStackTrace();
-//            } finally {
-//                if (urlConnection != null) {
-//                    urlConnection.disconnect();
-//                }
-//            }
-//            return null;
-//        }
-//
-//        @Override
-//        protected void onPostExecute(String s) {
-//            super.onPostExecute(s);
-//            p.dismiss();
-//            System.out.println("@@@@" + s);
-//
-//            TextView textView1 = findViewById(R.id.celsiusDegree);
-//            textView1.setText(temperature + "℉");
-//        }
-//    }
 
     private class Async extends AsyncTask <Void, String, Weather> {
         @Override
@@ -174,7 +113,6 @@ public class MainActivity extends AppCompatActivity {
             URL url;
             HttpURLConnection urlConnection = null;
             StringBuilder readTextBuf = new StringBuilder();
-            Weather weather = new Weather();
 
             try {
                 url = new URL("http://api.openweathermap.org/data/2.5/weather?q=London,uk&APPID=ef7d0f574f4f130be5273b3c5e07988d");
@@ -191,30 +129,25 @@ public class MainActivity extends AppCompatActivity {
                 int code = urlConnection.getResponseCode();
                 if (code !=  200) {throw new IOException("Invalid response from server: " + code);}
 
-                JSONObject reader = new JSONObject(readTextBuf.toString());
-                JSONObject main = reader.getJSONObject("main");
-
-
-                temperature = main.getString("temp");
-                String pressure = main.getString("pressure");
-                String humidity = main.getString("humidity");
-
-
+                Gson gson = new Gson();
+                JsonParser parser = new JsonParser();
+                Object reader = parser.parse(readTextBuf.toString());
+                String inputWeather = reader.toString();
+                weatherData = gson.fromJson(inputWeather, Weather.class);
             } catch (IOException exception1) {
                 exception1.printStackTrace();
-            } catch (JSONException exception2) {
-                exception2.printStackTrace();
             } finally {
                 if (urlConnection != null) {
                     urlConnection.disconnect();
                 }
             }
-            return null;
+            return weatherData;
         }
 
         @Override
         protected void onPostExecute(Weather weather) {
             super.onPostExecute(weather);
+            textView1.setText(weatherData.getMain().getTemp() + "℉");
         }
     }
 }
