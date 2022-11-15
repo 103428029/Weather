@@ -7,8 +7,6 @@ import android.view.ViewGroup;
 import android.view.LayoutInflater;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.example.test.DayWeather;
 import com.example.test.R;
 
 import java.util.List;
