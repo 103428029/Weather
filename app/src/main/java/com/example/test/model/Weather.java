@@ -8,22 +8,11 @@ public class Weather {
 
     @SerializedName("weather")
     private List<WeatherDesc> weatherDesc;
-
     public List<WeatherDesc> getWeatherDesc() {
         return weatherDesc;
     }
-
     public void setWeatherDesc(List<WeatherDesc> weatherDesc) {
         this.weatherDesc = weatherDesc;
-    }
-
-    @SerializedName("base")
-    private String base;
-    public String getBase() {
-        return base;
-    }
-    public void setBase(String base) {
-        this.base = base;
     }
 
     @SerializedName("main")
@@ -53,12 +42,4 @@ public class Weather {
         this.wind = wind;
     }
 
-    @SerializedName("name")
-    private String location;
-    public String getLocation() {
-        return location;
-    }
-    public void setLocation(String location) {
-        this.location = location;
-    }
 }

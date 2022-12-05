@@ -35,13 +35,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
-    //    int[] weatherImg = {R.drawable.rain, R.drawable.night_storm, R.drawable.night_storm, R.drawable.rain, R.drawable.rain, R.drawable.night_storm};
-//    String[] temp = {"21℃", "20℃", "19℃", "21℃", "20℃", "22℃"};
-//    String[] time = {"4:00 PM", "5:00 PM", "6:00 PM", "7:00 PM", "8:00 PM", "9:00 PM"};
-//    int[] weatherImg2 = {R.drawable.rain3, R.drawable.rain4, R.drawable.rain4, R.drawable.rain3};
-//    String[] dayList = {"Wednesday", "Thursday", "Friday", "Saturday"};
-//    String[] descriptionList = {"Chance of heavy rain.", "Chance of lightning.", "Chance of lightning.", "Likely to have light rain"};
-//    String[] temp2 = {"20℃", "21℃", "19℃", "20℃"};
+
     RecyclerView recyclerView;
     CustomAdapter programAdapter;
     RecyclerView.LayoutManager layoutManager;
@@ -53,10 +47,6 @@ public class MainActivity extends AppCompatActivity {
     Weather weatherData;
     TextView textView1;
     TextView textView2;
-    TextView textView3;
-    TextView textView4;
-    TextView textView5;
-    TextView textView6;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,7 +84,8 @@ public class MainActivity extends AppCompatActivity {
 
         new Async().execute();
         textView1 = findViewById(R.id.celsiusDegree);
-        textView2 = findViewById(R.id.text);
+        textView2 = findViewById(R.id.text); //desc
+
     }
 
     public void newScreen(View view) {
@@ -148,6 +139,12 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(Weather weather) {
             super.onPostExecute(weather);
             textView1.setText(weatherData.getMain().getTemp() + "℉");
+            if (weatherData.getWeatherDesc().isEmpty()) {
+                System.out.println("Array is empty");
+            } else {
+                textView2.setText(weatherData.getWeatherDesc().get(0).getDescription());
+            }
+
         }
     }
 }
