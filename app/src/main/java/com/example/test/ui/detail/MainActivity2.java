@@ -44,6 +44,7 @@ public class MainActivity2 extends AppCompatActivity {
     Weather weatherData;
     int pressure;
     int humidity;
+    String humid = "12";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +68,7 @@ public class MainActivity2 extends AppCompatActivity {
         layoutManager2 = new GridLayoutManager(this, 2);
         recyclerView2.setLayoutManager(layoutManager2);
         List<RV3Data> rv3DataList = new ArrayList<>();
-        rv3DataList.add(new RV3Data(R.drawable.ic_humidity, "86%", "Humidity"));
+        rv3DataList.add(new RV3Data(R.drawable.ic_humidity, "86%" , "Humidity"));
         rv3DataList.add(new RV3Data(R.drawable.ic_air_pressure, "940hPa", "Air Pressure"));
         rv3DataList.add(new RV3Data(R.drawable.ic_wind, "1 km/h", "Wind Velocity"));
         rv3DataList.add(new RV3Data(R.drawable.ic_fog, "14%", "Fog"));
@@ -169,7 +170,8 @@ public class MainActivity2 extends AppCompatActivity {
         protected void onPostExecute(Weather weather) {
             super.onPostExecute(weather);
             humidity = weatherData.getMain().getHumidity();
-            System.out.println(humidity);
+            humid = String.valueOf(weatherData.getMain().getHumidity());
+            System.out.println(humid);
             pressure = weatherData.getMain().getPressure();
         }
     }

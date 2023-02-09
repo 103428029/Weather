@@ -5,7 +5,6 @@
     android:id="@+id/sampleView3"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-
     android:background="@drawable/txtdraw5"
     android:layout_margin="10dp">
 
